@@ -35,21 +35,35 @@ textarea {
   margin: 0;
   /* font-family: Arial, 'Microsoft YaHei', '宋体'; */
 }
-
+body {
+  line-height: 1.6;
+  text-rendering: optimizeSpeed;
+  /* 优化文本的渲染方式，以提高性能 */
+  overflow: hidden;
+}
+body,
+html,
+.app {
+  height: 100%
+}
 /*去掉列表默认排列*/
 ul,
 ol,
 li {
   list-style: none;
 }
-
 /*去掉底部横线*/
 /*把a元素更改设置成块级元素，这个根据实际情况决定要不要*/
 a {
   text-decoration: none;
   display: block;
 }
-
+input,
+button,
+textarea,
+select {
+  font: inherit
+}
 /*img标签要清除border。*/
 /*display设为block设置为块级元素，默认为display:inline;
 存在下边线多出4px状况,所以一般设为block*/
@@ -71,3 +85,11 @@ img {
   visibility: hidden;
   height: 0;
 }
+svg {
+    overflow: visible
+}
+/* 
+*,*:before,*:after {
+    box-sizing: border-box;
+    transition-timing-function: cubic-bezier(.4,0,0,1)!important;
+} */

@@ -1,99 +1,114 @@
+import "../assets/style/tasks.css";
 import { useSnapshot } from "valtio";
 import state from "../state";
-import { css } from "@emotion/css";
-import { useState } from "react";
-const right = css`
-  width: 70%;
-  margin-left: 50px;
-  padding: 30px 20px;
-  li {
-    display: flex;
-    background: #fff;
-    margin-bottom: 5px;
-    padding: 10px 20px;
-    border-radius: 8px;
-  }
-`;
-const selectTitle = css`
-  font-size: 20px;
-  margin-bottom: 20px;
-`;
-const done = css`
-  text-decoration: line-through;
-`;
-const listTitle = css`
-  font-size: 14px;
-`;
-const listCheck = css`
-  width: 16px;
-  margin-right: 10px;
-`;
-const listIcon = css`
-  margin-right: 10px;
-`;
+import { useState, useRef } from "react";
+import classnames from "classnames";
+
 function AddTodo() {
   const snapshot = useSnapshot(state);
-  const [isShow, setIsShow] = useState(true);
-  function handleMoreClick() {
-    setIsShow(!isShow);
-  }
-  function onKeyDownchange(e) {
-    if (e.keyCode === 13) {
+  const inputRef = useRef(null);
+  const [inputValue, setInputValue] = useState(""); // 输入框的值存储在状态中
+  // add tasks输入框聚焦时添加类名
+  const [isFocused, setIsFocused] = useState(false);
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+  const onKeyDownchange = (event) => {
+    if (event.keyCode === 13 && event.target.value) {
       const newTodo = {
         type: snapshot.selectItem.id,
         id: snapshot.todo.length + 1,
-        title: e.target.value,
+        title: event.target.value,
         check: false,
       };
       state.todo.push(newTodo);
-      setIsShow(true);
+      setInputValue(event.target.value);
+      setTimeout(() => {
+        // inputRef.current.blur();
+        setInputValue(""); // 清空输入框的值
+      }, 0);
     }
-  }
+  };
+
   return (
-    <div>
-      {isShow ? (
-        <div onClick={handleMoreClick}>
-          <span className={listIcon}>➕</span>
-          Creat
-        </div>
-      ) : (
-        <div>
-          <input onKeyDown={(e) => onKeyDownchange(e)} />
-        </div>
-      )}
-    </div>
+    <input
+      ref={inputRef}
+      value={inputValue}
+      onChange={handleChange}
+      onKeyDown={(e) => onKeyDownchange(e)}
+      placeholder="📝 Create new task"
+      className={classnames("tasksInput", { "drop-shadow-xl": isFocused })}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+    />
   );
 }
 function TaskItems() {
   const snapshot = useSnapshot(state);
-  function onChangeCheck(e, item) {
-    const todo = state.todo.find((t) => t.id === item.id);
-    todo.check = e.target.checked;
-  }
+  const [hoveredIndex, setIsHovered] = useState(null);
+  const handleMouseEnter = (index) => {
+    setIsHovered(index);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
   const selectSide = snapshot.todo.filter((item) => {
     return snapshot.selectItem.id === item.type;
   });
-  const listItems = selectSide.map((item, index) => (
-    <li key={item.id} className={item.check ? done : ""}>
-      <input
-        className={listCheck}
-        type="checkbox"
-        checked={item.check}
-        onChange={(e) => onChangeCheck(e, item)}
-      />
-      <div className={listTitle}>{item.title}</div>
-    </li>
-  ));
-  return <ul>{listItems}</ul>;
+  const onChangeCheck = (e, item, index) => {
+    const todo = state.todo.find((t) => t.id === item.id);
+    todo.check = e.target.checked;
+    if (e.target.checked) {
+      todo.type = 999; // type = 999 已完成勾选
+    } else {
+      todo.type = 888; // type = 888 重新创建未分组的todolist
+    }
+    state.todo;
+    console.log(state.todo);
+  };
+
+  return (
+    <ul>
+      {selectSide.reverse().map((item, index) => (
+        <li
+          onMouseEnter={() => handleMouseEnter(index)}
+          onMouseLeave={handleMouseLeave}
+          key={item.id}
+          className={classnames("todoList", "relative", "flex", "items-center")}
+        >
+          <input
+            className="listCheck relative appearance-none "
+            type="checkbox"
+            checked={item.check}
+            onChange={(e) => onChangeCheck(e, item, index)}
+          />
+          <div className="listTitle truncate w-auto">{item.title}</div>
+          <div className={classnames({ hidden: index !== hoveredIndex })}>
+            {snapshot.selectItem.icon}
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
 }
 export default function ListTodo() {
   const snapshot = useSnapshot(state);
   return (
     <>
-      <div className={right}>
-        <div className={selectTitle}>{snapshot.selectItem.title}</div>
-        <AddTodo />
-        <TaskItems />
+      <div className="right">
+        <div className="content relative flex flex-col">
+          <div className="selectTitle sticky">
+            <div className="text relative">{snapshot.selectItem.title}</div>
+          </div>
+          <AddTodo />
+          <TaskItems />
+        </div>
       </div>
     </>
   );

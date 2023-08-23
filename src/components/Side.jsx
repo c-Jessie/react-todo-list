@@ -1,122 +1,123 @@
+import "../assets/style/side.css";
 import { useSnapshot } from "valtio";
 import state from "../state";
-import { css } from "@emotion/css";
-import { useState } from "react";
-// import { useImmer } from "use-immer";
-const left = css`
-  background: #fff;
-  width: 30%;
-  border-radius: 8px;
-  padding: 30px 20px;
-  font-weight: 600;
-  li {
-    border-radius: 8px;
-    padding: 8px 10px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    &:hover {
-      background: #f8f8f8;
-    }
-  }
-`;
-const listIcon = css`
-  margin-right: 10px;
-`;
-const listBadge = css`
-  padding: 1px 2px;
-  background: #edebee;
-  color: #c7c5c5;
-  border-radius: 4px;
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
-  text-align: center;
-}
-`;
-const active = css`
-  background: #f8f8f8;
-`;
+import { useState, useRef } from "react";
+import classNames from "classnames";
 
-const itemLeft = css`
-  width: 100%;
-  display: flex;
-  align-content: center;
-  flex-direction: row;
-  flex-wrap: nowrap;
-`;
-const removeSelect = css`
-  color: #ff5f5f;
-  width: 62px;
-`;
-function AddTodo() {
-  const snapshot = useSnapshot(state);
-  const [isShow, setIsShow] = useState(true);
-  function handleMoreClick() {
-    setIsShow(!isShow);
-  }
-  function onKeyDownchange(e) {
-    if (e.keyCode === 13) {
-      const newCategory = {
-        id: snapshot.category.length + 1,
-        title: e.target.value,
-        icon: "❓",
-        badge: 0,
-      };
-      state.category.push(newCategory);
-      // state.current = snapshot.category.length + 1;
-      // state.selectItem = newCategory;
-      setIsShow(true);
-    }
-  }
-  return (
-    <div>
-      {isShow ? (
-        <div onClick={handleMoreClick}>
-          <span className={listIcon}>➕</span>
-          <span>Creat</span>
-        </div>
-      ) : (
-        <div>
-          <input onKeyDown={(e) => onKeyDownchange(e)} />
-        </div>
-      )}
-    </div>
-  );
-}
 function SideItems() {
+  const [showRemove, setShowRemove] = useState(null);
+  const onMouseEnter = (index) => {
+    setShowRemove(index);
+  };
+  const onMouseLeaves = () => {
+    setShowRemove(null);
+  };
   const snapshot = useSnapshot(state);
   const listItems = snapshot.category.map((item, index) => (
-    <li key={item.id} className={snapshot.current === index ? active : ""}>
+    <li
+      onMouseEnter={() => onMouseEnter(index)}
+      onMouseLeave={onMouseLeaves}
+      key={item.id}
+      className={classNames("flex justify-between items-stretch mb-2.5", {
+        active: snapshot.current === index,
+      })}
+    >
       <div
-        className={itemLeft}
+        className="w-full flex justify-between"
         onClick={() => {
           state.current = index;
           state.selectItem = item;
         }}
       >
-        <span className={listIcon}>{item.icon}</span>
-        <span>{item.title}</span>
-        <div className={listBadge}>{item.badge}</div>
-      </div>
-      <div
-        className={removeSelect}
-        onClick={() => {
-          state.category.splice(index, 1);
-        }}
-      >
-        <span className={listIcon}>🗑️</span>删除
+        <div>
+          <span className="mr-2.5">{item.icon}</span>
+          <span className="truncate w-52">{item.title}</span>
+        </div>
+        <div className="flex">
+          {/* <div className="listBadge">{item.badge > 99 ? "99+" : item.badge}</div> */}
+          {item.id !== 888 && item.id !== 999 ? (
+            <div
+              className={classNames({ hidden: index !== showRemove })}
+              onClick={() => {
+                state.category.splice(index, 1);
+              }}
+            >
+              删除
+            </div>
+          ) : (
+            ""
+          )}
+          <div className="listBadge">
+            {
+              snapshot.todo.filter((todo) => {
+                return todo.type === item.id;
+              }).length
+            }
+          </div>
+        </div>
       </div>
     </li>
   ));
   return <ul>{listItems}</ul>;
 }
+
+function AddTodo() {
+  const snapshot = useSnapshot(state);
+  const [inputVisible, setInputVisible] = useState(false);
+  const inputRef = useRef(null);
+  const handleToggleInput = () => {
+    setInputVisible(true);
+    setTimeout(() => {
+      inputRef.current.focus();
+    }, 0);
+  };
+
+  const handleInputBlur = (event) => {
+    if (!event.target.value) {
+      setInputVisible(false);
+    }
+  };
+
+  const handleInputKeyUp = (event) => {
+    if (event.key === "Enter") {
+      const newCategory = {
+        id: snapshot.category.length + 1,
+        title: event.target.value,
+        icon: "🆕",
+        badge: 0,
+      };
+      state.category.push(newCategory);
+      setInputVisible(false);
+    }
+  };
+  return (
+    <div className="addSide">
+      {!inputVisible ? (
+        <button onClick={handleToggleInput} className="addBtn flex">
+          <span className="mr-2.5 addIcon">➕</span>
+          <span>Create</span>
+        </button>
+      ) : (
+        <div className="pl-4 ">
+          <span className="text-lg">🆕</span>
+          <input
+            type="text"
+            className="pl-4 todoInput"
+            ref={inputRef}
+            placeholder="List name"
+            onBlur={handleInputBlur}
+            onKeyUp={handleInputKeyUp}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Side() {
   return (
     <>
-      <div className={left}>
+      <div className="left">
         <SideItems />
         <AddTodo />
       </div>
