@@ -34,20 +34,18 @@
 }
 .addSide {
   cursor: pointer;
-  &:hover {
-    .addBtn {
-      color: rgb(39, 39, 42);
-    }
-    .addIcon {
-      background-color: rgb(242, 244, 247);
-      transition: opacity 0.15s ease 0s;
-    }
-  }
 }
 .addBtn {
   width: 100%;
   line-height: 32px;
   color: rgb(97, 104, 112);
+}
+.changeBtn {
+  color: rgb(39, 39, 42);
+}
+.changeAddIcon {
+  background-color: rgb(242, 244, 247);
+  transition: opacity 0.15s ease 0s;
 }
 .addIcon {
   display: inline-block;

@@ -64,7 +64,14 @@ function SideItems() {
 function AddTodo() {
   const snapshot = useSnapshot(state);
   const [inputVisible, setInputVisible] = useState(false);
+  const [addBtn, setAddBtn] = useState(false);
   const inputRef = useRef(null);
+  const onMouseLeavesBtn = () => {
+    setAddBtn(false);
+  };
+  const onMouseEnterBtn = () => {
+    setAddBtn(true);
+  };
   const handleToggleInput = () => {
     setInputVisible(true);
     setTimeout(() => {
@@ -91,11 +98,21 @@ function AddTodo() {
     }
   };
   return (
-    <div className="addSide">
+    <div
+      className="addSide"
+      onMouseEnter={onMouseEnterBtn}
+      onMouseLeave={onMouseLeavesBtn}
+    >
       {!inputVisible ? (
-        <button onClick={handleToggleInput} className="addBtn flex">
-          <span className="mr-2.5 addIcon">➕</span>
-          <span>Create</span>
+        <button onClick={handleToggleInput} className="addBtn flex ">
+          <span
+            className={classNames("mr-2.5 addIcon ", {
+              changeAddIcon: addBtn,
+            })}
+          >
+            ➕
+          </span>
+          <span className={classNames({ changeBtn: addBtn })}>Create</span>
         </button>
       ) : (
         <div className="pl-4 ">
