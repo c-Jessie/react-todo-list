@@ -4,30 +4,35 @@ export const category = [
     title: "已完成",
     icon: "✅",
     badge: 0,
+    bgColor: "rgb(54 209 68) 20px 200px 240px",
   },
   {
     id: 888,
     title: "未分组",
     icon: "❓",
     badge: 0,
+    bgColor: "rgb(237 0 0) 20px 200px 240px",
   },
   {
     id: 0,
     title: "水果",
     icon: "🍉",
     badge: 200,
+    bgColor: "rgb(238 141 134) 20px 200px 240px",
   },
   {
     id: 1,
     title: "植物",
     icon: "🌱",
     badge: 99,
+    bgColor: "rgb(125 205 28) 20px 200px 240px",
   },
   {
     id: 2,
     title: "动物",
     icon: "🐒",
     badge: 0,
+    bgColor: "rgb(154 116 66) 20px 200px 240px",
   },
 ];
 export const todo = [
