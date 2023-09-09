@@ -1,7 +1,7 @@
-import { proxy } from "valtio";
+import { proxy, subscribe } from "valtio";
 import { category, todo } from "./api/data";
-// 创建一个状态对象
-const state = proxy({
+// 1 创建一个状态对象并初始化
+const valtioState = proxy({
   current: 0,
   selectItem: {
     id: 999,
@@ -13,5 +13,18 @@ const state = proxy({
   category,
   todo,
 });
+const storedData = localStorage.getItem("myValtioData");
+if (storedData) {
+  // 2 判断是否需要初始化
+  const parsedData = JSON.parse(storedData);
+  valtioState.current = parsedData.current;
+  valtioState.selectItem = parsedData.selectItem;
+  valtioState.category = parsedData.category;
+  valtioState.todo = parsedData.todo;
+}
 
-export default state;
+// 3 订阅Valtio状态更改并进行更改
+subscribe(valtioState, () => {
+  localStorage.setItem("myValtioData", JSON.stringify(valtioState));
+});
+export default valtioState;

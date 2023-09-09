@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import { useSnapshot } from "valtio";
-import state from "../state";
+import valtioState from "../state";
 // 默认导出
 export default function AddTodo() {
-  const snapshot = useSnapshot(state);
+  const snapshot = useSnapshot(valtioState);
   const [inputVisible, setInputVisible] = useState(false);
   const inputRef = useRef(null);
   const handleToggleInput = () => {
@@ -28,7 +28,7 @@ export default function AddTodo() {
         badge: 0,
         bgColor: "rgb(0, 143, 253) 20px 200px 240px",
       };
-      state.category.push(newCategory);
+      valtioState.category.push(newCategory);
       setInputVisible(false);
     }
   };

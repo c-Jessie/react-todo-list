@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useSnapshot } from "valtio";
-import state from "../state";
+import valtioState from "../state";
 import classNames from "classnames";
 // 默认导出
 export default function SideItems() {
-  const snapshot = useSnapshot(state);
+  const snapshot = useSnapshot(valtioState);
   const [showRemove, setShowRemove] = useState(null);
   const onMouseEnter = (index) => {
     setShowRemove(index);
@@ -27,8 +27,8 @@ export default function SideItems() {
       <div
         className="w-full flex justify-between text-lg"
         onClick={() => {
-          state.current = index;
-          state.selectItem = item;
+          valtioState.current = index;
+          valtioState.selectItem = item;
         }}
       >
         <div>
@@ -43,7 +43,7 @@ export default function SideItems() {
                 hidden: index !== showRemove,
               })}
               onClick={() => {
-                state.category.splice(index, 1);
+                valtioState.category.splice(index, 1);
               }}
             >
               删除

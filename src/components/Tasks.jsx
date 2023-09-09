@@ -1,12 +1,12 @@
 import { useSnapshot } from "valtio";
-import state from "../state";
+import valtioState from "../state";
 import { AddTodoList } from "./AddTodoList";
 import { TaskItems } from "./TaskItems";
 
 export default function ListTodo() {
-  const snapshot = useSnapshot(state);
+  const snapshot = useSnapshot(valtioState);
   const boxShadow = {
-    boxShadow: state.selectItem.bgColor,
+    boxShadow: valtioState.selectItem.bgColor,
     transform: "rotate(-8deg) translateY(-175%) translateZ(0px)",
   };
   const bottomShadow = {
