@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useSnapshot } from "valtio";
-import valtioState from "../state";
+import { valtioState } from "../state";
 import classnames from "classnames";
 // 具名导出
 export function AddTodoList() {
@@ -21,7 +21,7 @@ export function AddTodoList() {
   const onKeyDownchange = (event) => {
     if (event.keyCode === 13 && event.target.value) {
       const newTodo = {
-        type: snapshot.selectItem.id,
+        type: snapshot.selectSide.id,
         id: snapshot.todo.length + 1,
         title: event.target.value,
         check: false,

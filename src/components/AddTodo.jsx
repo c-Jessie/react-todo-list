@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useSnapshot } from "valtio";
-import valtioState from "../state";
+import { valtioState } from "../state";
 // 默认导出
 export default function AddTodo() {
   const snapshot = useSnapshot(valtioState);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSnapshot } from "valtio";
-import valtioState from "../state";
+import { valtioState } from "../state";
 import classNames from "classnames";
 // 默认导出
 export default function SideItems() {
@@ -28,7 +28,7 @@ export default function SideItems() {
         className="w-full flex justify-between text-lg"
         onClick={() => {
           valtioState.current = index;
-          valtioState.selectItem = item;
+          valtioState.selectSide = item;
         }}
       >
         <div>

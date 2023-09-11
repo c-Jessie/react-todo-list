@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSnapshot } from "valtio";
-import valtioState from "../state";
+import { valtioState, editState } from "../state";
 import classnames from "classnames";
 // 具名导出
 export function TaskItems() {
@@ -13,7 +13,7 @@ export function TaskItems() {
     setIsHovered(null);
   };
   const selectSide = snapshot.todo.filter((item) => {
-    return snapshot.selectItem.id === item.type;
+    return snapshot.selectSide.id === item.type;
   });
   const onChangeCheck = (e, item) => {
     const todo = valtioState.todo.find((t) => t.id === item.id);
@@ -23,13 +23,18 @@ export function TaskItems() {
     } else {
       todo.type = 888; // type = 888 重新创建未分组的todolist
     }
-    valtioState.todo;
   };
-
+  const handleClick = (e, item, index) => {
+    valtioState.selectTodoListId = item.id;
+    editState.showEdit = true;
+  };
   return (
     <ul>
       {selectSide.reverse().map((item, index) => (
         <li
+          onClick={(e) => {
+            handleClick(e, item, index);
+          }}
           onMouseEnter={() => handleMouseEnter(index)}
           onMouseLeave={handleMouseLeave}
           key={item.id}
@@ -42,11 +47,14 @@ export function TaskItems() {
             className="w-6 h-6 mr-2 relative "
             type="checkbox"
             checked={item.check}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
             onChange={(e) => onChangeCheck(e, item, index)}
           />
           <div className="text-xl truncate w-auto">{item.title}</div>
           <div className={classnames({ hidden: index !== hoveredIndex })}>
-            {snapshot.selectItem.icon}
+            {snapshot.selectSide.icon}
           </div>
         </li>
       ))}
