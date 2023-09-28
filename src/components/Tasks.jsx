@@ -1,12 +1,12 @@
 import { useSnapshot } from "valtio";
 import { valtioState } from "../state";
-import { AddTodoList } from "./AddTodoList";
-import { TaskItems } from "./TaskItems";
+import { AddList } from "./AddList";
+import { Lists } from "./Lists";
 
-export default function ListTodo() {
+export default function Tasks() {
   const snapshot = useSnapshot(valtioState);
   const boxShadow = {
-    boxShadow: valtioState.selectSide.bgColor,
+    boxShadow: valtioState.selectSide?.bgColor,
     transform: "rotate(-8deg) translateY(-175%) translateZ(0px)",
   };
   const bottomShadow = {
@@ -29,11 +29,11 @@ export default function ListTodo() {
         <div className="max-w-screen-sm my-0 mx-auto min-h-full w-full relative flex flex-col">
           <div className="pt-12 pb-7 sticky top-0 z-10 backdrop-blur">
             <div className="text-2xl font-medium relative">
-              {snapshot.selectSide.title}
+              {snapshot.selectSide?.title}
             </div>
           </div>
-          <AddTodoList />
-          <TaskItems />
+          <AddList />
+          <Lists />
         </div>
       </div>
     </>

@@ -5,13 +5,13 @@ import { category, todo } from "./api/data";
 const valtioState = proxy({
   current: 0,
   selectSide: {
-    id: 999,
+    id: 0,
     title: "已完成",
     icon: "✅",
     badge: 0,
     bgColor: "rgb(54 209 68) 20px 200px 240px",
   },
-  selectTodoListId: 0,
+  selectTodoListId: null,
   category,
   todo,
 });
@@ -30,6 +30,7 @@ subscribe(valtioState, () => {
   localStorage.setItem("myValtioData", JSON.stringify(valtioState));
 });
 const editState = proxy({
-  showEdit: false,
+  showEditList: false,
+  showEditTodo: false,
 });
 export { valtioState, editState };

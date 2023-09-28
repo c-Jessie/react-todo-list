@@ -6,20 +6,20 @@ export default function AddTodo() {
   const snapshot = useSnapshot(valtioState);
   const [inputVisible, setInputVisible] = useState(false);
   const inputRef = useRef(null);
-  const handleToggleInput = () => {
+  const onToggleInput = () => {
     setInputVisible(true);
     setTimeout(() => {
       inputRef.current.focus();
     }, 0);
   };
 
-  const handleInputBlur = (event) => {
+  const onInputBlur = (event) => {
     if (!event.target.value) {
       setInputVisible(false);
     }
   };
 
-  const handleInputKeyUp = (event) => {
+  const onInputKeyUp = (event) => {
     if (event.key === "Enter") {
       const newCategory = {
         id: snapshot.category.length + 1,
@@ -36,7 +36,7 @@ export default function AddTodo() {
     <div className="px-5 py-2 w-full text-lg">
       {!inputVisible ? (
         <button
-          onClick={handleToggleInput}
+          onClick={onToggleInput}
           className="w-full flex items-center mr-2.5 text-gray-500"
         >
           <span className="pr-4 addIcon">➕</span>
@@ -47,11 +47,11 @@ export default function AddTodo() {
           <span className="mr-2.5">🆕</span>
           <input
             type="text"
-            className="focus:outline-none text-lg font-medium "
+            className="focus:outline-none font-medium text-xl"
             ref={inputRef}
             placeholder="List name"
-            onBlur={handleInputBlur}
-            onKeyUp={handleInputKeyUp}
+            onBlur={onInputBlur}
+            onKeyUp={onInputKeyUp}
           />
         </div>
       )}

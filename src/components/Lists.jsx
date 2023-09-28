@@ -3,41 +3,37 @@ import { useSnapshot } from "valtio";
 import { valtioState, editState } from "../state";
 import classnames from "classnames";
 // 具名导出
-export function TaskItems() {
+export function Lists() {
   const snapshot = useSnapshot(valtioState);
   const [hoveredIndex, setIsHovered] = useState(null);
-  const handleMouseEnter = (index) => {
+  const onMouseEnter = (index) => {
     setIsHovered(index);
   };
-  const handleMouseLeave = () => {
+  const onMouseLeave = () => {
     setIsHovered(null);
   };
   const selectSide = snapshot.todo.filter((item) => {
-    return snapshot.selectSide.id === item.type;
+    if (!item.check) return item.categoryId === snapshot.selectSide?.id;
+    if (item.check) return snapshot.selectSide?.id === 0;
   });
-  const onChangeCheck = (e, item) => {
+  const onCheckChange = (e, item) => {
     const todo = valtioState.todo.find((t) => t.id === item.id);
     todo.check = e.target.checked;
-    if (e.target.checked) {
-      todo.type = 999; // type = 999 已完成勾选
-    } else {
-      todo.type = 888; // type = 888 重新创建未分组的todolist
-    }
   };
-  const handleClick = (e, item, index) => {
+  const onClick = (e, item, index) => {
     valtioState.selectTodoListId = item.id;
-    editState.showEdit = true;
+    editState.showEditList = true;
   };
   return (
     <ul>
       {selectSide.reverse().map((item, index) => (
         <li
-          onClick={(e) => {
-            handleClick(e, item, index);
-          }}
-          onMouseEnter={() => handleMouseEnter(index)}
-          onMouseLeave={handleMouseLeave}
           key={item.id}
+          onClick={(e) => {
+            onClick(e, item, index);
+          }}
+          onMouseEnter={() => onMouseEnter(index)}
+          onMouseLeave={onMouseLeave}
           className={classnames(
             "relative px-4 py-3.5 mb-1.5 rounded-xl  flex items-center bg-white",
             { "line-through": item.check }
@@ -50,7 +46,7 @@ export function TaskItems() {
             onClick={(e) => {
               e.stopPropagation();
             }}
-            onChange={(e) => onChangeCheck(e, item, index)}
+            onChange={(e) => onCheckChange(e, item, index)}
           />
           <div className="text-xl truncate w-auto">{item.title}</div>
           <div className={classnames({ hidden: index !== hoveredIndex })}>

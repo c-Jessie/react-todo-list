@@ -1,5 +1,6 @@
 import "./App.css";
-import { EditTask } from "./components/EditTask";
+import { EditList } from "./components/EditList";
+import { EditTodo } from "./components/EditTodo";
 import Side from "./components/Side";
 import Tasks from "./components/Tasks";
 function App() {
@@ -8,7 +9,8 @@ function App() {
       <div className="board h-screen flex">
         <Side />
         <Tasks />
-        <EditTask />
+        <EditList />
+        <EditTodo />
       </div>
     </>
   );
