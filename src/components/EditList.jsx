@@ -65,7 +65,7 @@ export function EditList() {
           onClick={() => (editState.showEditList = false)}
           className="absolute -top-5 -right-5 p-2 hover:bg-gray-100 rounded-lg"
         >
-          ✖️
+          ✕
         </button>
         <div>
           <div className="flex pt-6">

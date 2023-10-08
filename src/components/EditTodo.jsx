@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { useSnapshot } from "valtio";
 import { valtioState, editState } from "../state";
 import classnames from "classnames";
+import Modal from "./Modal";
 export function EditTodo() {
   const snapshot = useSnapshot(valtioState);
   const snapshotEdit = useSnapshot(editState);
   const drawerRef = useRef(null);
   const [title, setTitle] = useState("");
+  const [isRemoveModalVisible, setRemoveModalVisible] = useState(false);
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
   const currentItem = valtioState.selectSide;
   useEffect(() => {
     if (currentItem) {
@@ -56,6 +59,16 @@ export function EditTodo() {
     valtioState.selectSide = valtioState.category[0];
     editState.showEditTodo = false;
   };
+  const showModalRemove = () => {
+    setRemoveModalVisible(true);
+  };
+  const showModalDelete = () => {
+    setDeleteModalVisible(true);
+  };
+  const closeModal = () => {
+    setRemoveModalVisible(false);
+    setDeleteModalVisible(false);
+  };
   return (
     <div
       ref={drawerRef}
@@ -72,10 +85,14 @@ export function EditTodo() {
           onClick={() => (editState.showEditTodo = false)}
           className="absolute -top-5 -right-5 p-2 hover:bg-gray-100 rounded-lg"
         >
-          ✖️
+          ✕
         </button>
         <div>
-          <div className="pt-6 mb-4 flex items-center">
+          <div
+            className={classnames("pt-6 mb-4 flex items-center", {
+              hidden: valtioState.current === 0,
+            })}
+          >
             <div>标题：</div>
             <input
               className="focus:outline-none text-lg font-medium bg-stone-50"
@@ -85,13 +102,13 @@ export function EditTodo() {
             />
           </div>
           <button
-            onClick={onRemoveList}
+            onClick={showModalRemove}
             className="bottom-0 inset-x-1 w-full p-2 mb-4 text-red-500 bg-red-50 hover:bg-red-100 rounded-lg"
           >
             🔙 Remove all tasks
           </button>
           <button
-            onClick={onRemoveTodo}
+            onClick={showModalDelete}
             className={classnames(
               "bottom-0 inset-x-1 w-full p-2 text-red-500 bg-red-50 hover:bg-red-100 rounded-lg",
               { hidden: valtioState.current === 0 }
@@ -99,6 +116,28 @@ export function EditTodo() {
           >
             🚮 Delete
           </button>
+          <Modal
+            content={
+              "Are you sure you want to remove all tasks from the list " +
+              currentItem.title +
+              " ?"
+            }
+            buttonTitle="Remove all tasks"
+            isVisible={isRemoveModalVisible}
+            onClose={closeModal}
+            onOk={onRemoveList}
+          />
+          <Modal
+            content={
+              "Are you sure you want to delete from the list " +
+              currentItem.title +
+              " ?"
+            }
+            buttonTitle="Delete"
+            isVisible={isDeleteModalVisible}
+            onClose={closeModal}
+            onOk={onRemoveTodo}
+          />
         </div>
       </div>
     </div>
