@@ -1,10 +1,6 @@
-# React + Vite
+# todolist-react
 
-## Tailwindcss + Classnames
+简单 todolist 小应用
 
-简单的 todo 小应用
-使用到的 hooks：useState、useRef
-
-访问链接 🔗：https://react-todo-roan-nine.vercel.app/
-<br/>
-仿 🔗：https://app.dona.ai/
+[访问 demo 🔗](https://react-todo-roan-nine.vercel.app/)
+[灵感来源 🔗](https://app.dona.ai/)
