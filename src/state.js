@@ -18,12 +18,13 @@ const valtioState = proxy({
 const storedData = localStorage.getItem("myValtioData");
 if (storedData) {
   // 2 判断是否需要初始化
-  const parsedData = JSON.parse(storedData);
-  valtioState.current = parsedData.current;
-  valtioState.selectSide = parsedData.selectSide;
-  valtioState.selectTodoListId = parsedData.selectTodoListId;
-  valtioState.category = parsedData.category;
-  valtioState.todo = parsedData.todo;
+  // const parsedData = JSON.parse(storedData);
+  // valtioState.current = parsedData.current;
+  // valtioState.selectSide = parsedData.selectSide;
+  // valtioState.selectTodoListId = parsedData.selectTodoListId;
+  // valtioState.category = parsedData.category;
+  // valtioState.todo = parsedData.todo;
+  Object.assign(valtioState, JSON.parse(storedData));
 }
 // 3 订阅Valtio状态更改并进行更改
 subscribe(valtioState, () => {

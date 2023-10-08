@@ -11,7 +11,7 @@ export default function CategoryList() {
     editState.showEditTodo = true;
     valtioState.current = item.id;
     valtioState.selectSide = item;
-    setCurrentIndex(index);
+    setCurrentIndex(item.id);
   };
   const TodoLength = ({ itemId }) => {
     return snapshot.todo.filter((todo) => {
@@ -28,7 +28,7 @@ export default function CategoryList() {
           className={classNames(
             "flex justify-between items-center relative h-14 box-content font-medium rounded-lg cursor-pointer hover:bg-slate-100",
             {
-              "bg-slate-100": index === currentIndex,
+              "bg-slate-100": index === snapshot.current,
             }
           )}
         >

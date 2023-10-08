@@ -21,7 +21,8 @@ export function EditTodo() {
     // 点击编辑抽屉面板之外
     const onClickOutside = (event) => {
       if (drawerRef.current && !drawerRef.current.contains(event.target)) {
-        editState.showEditTodo = false;
+        // editState.showEditTodo = false;
+        closeModal();
       }
     };
     // 添加事件监听器
@@ -48,16 +49,16 @@ export function EditTodo() {
         (item) => item.categoryId !== valtioState.current
       );
     }
-    editState.showEditTodo = false;
+    closeModal();
   };
   const onRemoveTodo = () => {
     valtioState.category = valtioState.category.filter((item) => {
-      if (item.id !== valtioState.current) return item;
+      if (item.id !== snapshot.current) return item;
     });
     valtioState.current = 0;
     valtioState.selectTodoListId = null;
     valtioState.selectSide = valtioState.category[0];
-    editState.showEditTodo = false;
+    closeModal();
   };
   const showModalRemove = () => {
     setRemoveModalVisible(true);

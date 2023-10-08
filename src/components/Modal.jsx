@@ -1,19 +1,18 @@
 import { useEffect } from "react";
 const Modal = ({ title, content, isVisible, onClose, buttonTitle, onOk }) => {
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      console.log(isVisible, event.target.classList);
-      if (isVisible && event.target.classList.contains("modal-overlay")) {
-        onClose();
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (isVisible && event.target.classList.contains("modal-overlay")) {
+  //       onClose();
+  //     }
+  //   };
 
-    document.addEventListener("click", handleClickOutside);
+  //   document.addEventListener("click", handleClickOutside);
 
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isVisible, onClose]);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [isVisible, onClose]);
 
   if (!isVisible) return null;
 
