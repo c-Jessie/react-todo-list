@@ -53,7 +53,7 @@ export function EditList() {
     <div
       ref={drawerRef}
       className={classnames(
-        "w-1/5 rounded-3xl p-10 text-center bg-stone-50 fixed right-2 bottom-2 top-2 text-sm z-10 ",
+        "w-1/5 rounded-3xl p-10 text-center bg-white fixed right-2 bottom-2 top-2 text-sm z-10 ",
         {
           hidden: !snapshotEdit.showEditList,
           block: snapshotEdit.showEditList,
